@@ -1,10 +1,12 @@
 .element__name {
   color: black;
   margin: 0;
+  font-family: Inter, Arial;
   line-height: 29px;
   font-size: 24px;
   font-weight: 900;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  max-width: 197px;
 }

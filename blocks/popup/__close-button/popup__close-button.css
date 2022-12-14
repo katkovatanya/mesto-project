@@ -6,6 +6,8 @@
   top: -42px;
   right: -32px;
   padding: 0;
+  cursor: pointer;
+  border: none;
 }
 
 @media screen and (max-width: 1050px) {
