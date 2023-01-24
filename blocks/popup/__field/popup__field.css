@@ -1,0 +1,30 @@
+.popup__field {
+  width: 358px;
+  margin: 54px auto 0;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  font-family: Inter, Arial, sans-serif;
+}
+
+.popup__field:last-of-type {
+  margin: 30px auto 0;
+}
+
+.popup__field::placeholder {
+  font-family: Inter, Arial, sans-serif;
+  color: #000;
+  line-height: 17px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+@media screen and (max-width: 1050px) {
+  .popup__field {
+    width: 238px;
+    margin-top: 75px;
+  }
+
+  .popup__field:last-of-type {
+    margin-top: 30px;
+  }
+}
