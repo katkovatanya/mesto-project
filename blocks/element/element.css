@@ -5,10 +5,5 @@
   max-width: 282px;
   display: flex;
   flex-direction: column;
-}
-
-@media screen and (max-width: 1050px) {
-  .element {
-    margin: 0 auto;
-  }
+  position: relative;
 }

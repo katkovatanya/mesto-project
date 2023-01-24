@@ -29,54 +29,19 @@
       </button>
     </section>
     <section class="elements">
-      <div class="element">
-        <img class="element__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Замок">
-        <div class="element__info">
-          <h2 class="element__name">Карачаевск</h2>
-          <button type="button" class="element__like-button">
+      <template id="element">
+        <div class="element">
+          <button type="button" class="element__delete-button"></button>
+          <button type="button" class="element__open-button">
+            <img class="element__image" alt="изображение места">
           </button>
+          <div class="element__info">
+            <h2 class="element__name"></h2>
+            <button type="button" class="element__like-button">
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Эльбрус">
-        <div class="element__info">
-          <h2 class="element__name">Гора Эльбрус</h2>
-          <button type="button" class="element__like-button">
-          </button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="горы">
-        <div class="element__info">
-          <h2 class="element__name">Домбай</h2>
-          <button type="button" class="element__like-button">
-          </button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Эльбрус">
-        <div class="element__info">
-          <h2 class="element__name">Гора Эльбрус</h2>
-          <button type="button" class="element__like-button">
-          </button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/kirill-pershin-1556355-unsplash.jpg" alt="горы">
-        <div class="element__info">
-          <h2 class="element__name">Домбай</h2>
-          <button type="button" class="element__like-button">
-          </button>
-        </div>
-      </div>
-      <div class="element">
-        <img class="element__image" src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Замок">
-        <div class="element__info">
-          <h2 class="element__name">Карачаевск</h2>
-          <button type="button" class="element__like-button">
-          </button>
-        </div>
-      </div>
+      </template>
     </section>
   </main>
   <footer class="footer">
@@ -95,6 +60,29 @@
       </form>
     </div>
   </div>
+  <div class="popup popup_element">
+    <div class="popup__container">
+      <button type="button" class="popup__close-button button-hover" id="popup__close-button">
+        <img class="popup__close-image" src="./images/close-icon.svg" alt="закрыть">
+      </button>
+      <h2 class="popup__title">Новое место</h2>
+      <form name="edit-form" class="popup__form">
+        <input name="name-place" class="popup__field" type="text" placeholder="Название">
+        <input name="link-place" class="popup__field" type="text" placeholder="Ссылка на картинку">
+        <button type="submit" class="popup__add-button" type="submit">Создать</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup_image popup">
+    <div class="popup__container_image">
+    <button type="button" class="popup__close-button popup__close-button_image button-hover">
+      <img class="popup__close-image" src="./images/close-icon.svg" alt="закрыть">
+    </button>
+    <img class="popup__image">
+    <p class="popup__caption" ></p>
+  </div>
+  </div>
+  <script src="./index.js"></script>
 </body>
 
 </html>

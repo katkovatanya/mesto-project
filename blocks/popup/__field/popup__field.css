@@ -12,10 +12,10 @@
 
 .popup__field::placeholder {
   font-family: Inter, Arial, sans-serif;
-  color: #000;
   line-height: 17px;
   font-size: 14px;
   font-weight: 400;
+  color: #C4C4C4;
 }
 
 @media screen and (max-width: 1050px) {
