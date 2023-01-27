@@ -49,6 +49,7 @@ const namePlaceInput = document.querySelector('[name="name-place"]');
 const linkPlaceInput = document.querySelector('[name="link-place"]');
 const imagePopupCaption = popupImage.querySelector('.popup__caption');
 const imagePopupPicture = popupImage.querySelector('.popup__image');
+const closeButtons = document.querySelectorAll('.popup__close-button');
 
 //функция открытия попапов
 function openPopup(popup) {
@@ -64,15 +65,10 @@ function closePopup(popup) {
 function createCard(elem) {
   const element = document.querySelector('#element').content;
   const cardElement = element.querySelector('.element').cloneNode(true);
+  const cardImage = cardElement.querySelector('.element__image');
   cardElement.querySelector('.element__name').textContent = elem.name;
-  cardElement.querySelector('.element__image').src = elem.link;
-  cardElement.querySelector('.element__image').alt = elem.name;
-  return cardElement;
-}
-//функция добавления карточки
-function addCard(item) {
-  const cardElement = createCard(item);
-  elements.prepend(cardElement);
+  cardImage.src = elem.link;
+  cardImage.alt = elem.name;
   //добавляем сразу слушатели событий для лайка и корзины
   const likeButton = cardElement.querySelector('.element__like-button');
   likeButton.addEventListener('click', () => {
@@ -87,10 +83,16 @@ function addCard(item) {
   const openImage = cardElement.querySelector('.element__open-button');
   openImage.addEventListener('click', () => {
     openPopup(popupImage);
-    imagePopupPicture.src = item.link;
-    imagePopupPicture.alt = item.name;
-    imagePopupCaption.textContent = item.name;
+    imagePopupPicture.src = elem.link;
+    imagePopupPicture.alt = elem.name;
+    imagePopupCaption.textContent = elem.name;
   });
+  return cardElement;
+}
+//функция добавления карточки
+function addCard(item) {
+  const cardElement = createCard(item);
+  elements.prepend(cardElement);
 }
 
 //загрузка на страницу карточек из массива
@@ -114,16 +116,16 @@ plusButton.addEventListener('click', clickPlusButton);
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = nameInput.value;
   profileText.textContent = jobInput.value;
-  profilePopup.classList.remove('popup_opened');
+  closePopup(profilePopup);
 }
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-formProfilePopup.addEventListener('submit', handleFormSubmit);
+formProfilePopup.addEventListener('submit', handleProfileFormSubmit);
 
 //отправка формы карточки
 function handleCardFormSubmit(evt) {
@@ -132,13 +134,13 @@ function handleCardFormSubmit(evt) {
   card.name = namePlaceInput.value;
   card.link = linkPlaceInput.value;
   addCard(card);
-  popupElement.classList.remove('popup_opened');
-  namePlaceInput.value = '';
-  linkPlaceInput.value = '';
+  closePopup(popupElement);
+  evt.target.reset();
 }
 
 formPlace.addEventListener('submit', handleCardFormSubmit);
 
-closeButtonProfile.addEventListener('click', () => closePopup(profilePopup));
-closeButtonElement.addEventListener('click', () => closePopup(popupElement));
-imageCloseButton.addEventListener('click', () => closePopup(popupImage));
+closeButtons.forEach((button) => {
+  const popup = button.closest('.popup');
+  button.addEventListener('click', () => closePopup(popup));
+});
