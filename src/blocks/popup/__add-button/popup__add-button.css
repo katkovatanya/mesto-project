@@ -13,10 +13,6 @@
   border: none;
 }
 
-.popup__add-button:hover {
-  opacity: .8;
-}
-
 @media screen and (max-width: 1050px) {
   .popup__add-button {
     width: 238px;

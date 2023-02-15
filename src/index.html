@@ -54,9 +54,11 @@
       </button>
       <h2 class="popup__title">Редактировать профиль</h2>
       <form name="edit-form" class="popup__form">
-        <input name="name-field" class="popup__field" type="text" placeholder="Жак-Ив Кусто">
-        <input name="text-field" class="popup__field" type="text" placeholder="Исследователь океана">
-        <button type="submit" class="popup__save-button" type="submit">Сохранить</button>
+        <input id="name-input" name="name-field" class="popup__field" type="text" placeholder="Жак-Ив Кусто" minlength="2" maxlength="40" required>
+        <span class="popup__field-error name-input-error"></span>
+        <input id="text-input" name="text-field" class="popup__field" type="text" placeholder="Исследователь океана" minlength="2" maxlength="200" required>
+        <span class="popup__field-error text-input-error"></span>
+        <button type="submit" class="popup__save-button popup__button" type="submit">Сохранить</button>
       </form>
     </div>
   </div>
@@ -67,14 +69,16 @@
       </button>
       <h2 class="popup__title">Новое место</h2>
       <form name="edit-form" class="popup__form element-popup__form">
-        <input name="name-place" class="popup__field" type="text" placeholder="Название">
-        <input name="link-place" class="popup__field" type="text" placeholder="Ссылка на картинку">
-        <button type="submit" class="popup__add-button" type="submit">Создать</button>
+        <input id="name-place-input" name="name-place" class="popup__field" type="text" placeholder="Название" minlength="2" maxlength="30" required>
+        <span class="popup__field-error name-place-input-error"></span>
+        <input id="link-place-input" name="link-place" class="popup__field" type="url" placeholder="Ссылка на картинку" required>
+        <span class="popup__field-error link-place-input-error"></span>
+        <button type="submit" class="popup__add-button popup__button popup__button_disabled" type="submit" disabled>Создать</button>
       </form>
     </div>
   </div>
   <div class="popup image-popup">
-    <div class="popup__container_image">
+    <div class="popup__container popup__container_image">
     <button type="button" class="popup__close-button popup__close-button_image button-hover">
       <img class="popup__close-image" src="./images/close-icon.svg" alt="закрыть">
     </button>
@@ -82,7 +86,11 @@
     <p class="popup__caption" ></p>
   </div>
   </div>
-  <script src="./scripts/index.js"></script>
+  <script type="module" src="./components/card.js"></script>
+  <script type="module" src="./components/modal.js"></script>
+  <script type="module" src="./components/utils.js"></script>
+  <script type="module" src="./components/validate.js"></script>
+  <script type="module" src="./index.js"></script>
 </body>
 
 </html>
