@@ -54,9 +54,9 @@
       </button>
       <h2 class="popup__title">Редактировать профиль</h2>
       <form name="edit-form" class="popup__form">
-        <input id="name-input" name="name-field" class="popup__field" type="text" placeholder="Жак-Ив Кусто" minlength="2" maxlength="40" required>
+        <input id="name-input" name="name-field" class="popup__field" type="text" placeholder="Жак-Ив Кусто" minlength="2" maxlength="40" required pattern="[A-Za-zА-Яа-яЁё\-\s]{0,40}"  data-error-message="Допустимо использовать латинские буквы, кириллические буквы, знаки дефиса и пробелы">
         <span class="popup__field-error name-input-error"></span>
-        <input id="text-input" name="text-field" class="popup__field" type="text" placeholder="Исследователь океана" minlength="2" maxlength="200" required>
+        <input id="text-input" name="text-field" class="popup__field" type="text" placeholder="Исследователь океана" minlength="2" maxlength="200" required pattern="[A-Za-zА-Яа-яЁё\-\s]{0,200}" data-error-message="Допустимо использовать латинские буквы, кириллические буквы, знаки дефиса и пробелы">
         <span class="popup__field-error text-input-error"></span>
         <button type="submit" class="popup__save-button popup__button" type="submit">Сохранить</button>
       </form>
@@ -69,7 +69,7 @@
       </button>
       <h2 class="popup__title">Новое место</h2>
       <form name="edit-form" class="popup__form element-popup__form">
-        <input id="name-place-input" name="name-place" class="popup__field" type="text" placeholder="Название" minlength="2" maxlength="30" required>
+        <input id="name-place-input" name="name-place" class="popup__field" type="text" placeholder="Название" minlength="2" maxlength="30" required pattern="[A-Za-zА-Яа-яЁё\-\s]{0,30}" data-error-message="Допустимо использовать латинские буквы, кириллические буквы, знаки дефиса и пробелы">
         <span class="popup__field-error name-place-input-error"></span>
         <input id="link-place-input" name="link-place" class="popup__field" type="url" placeholder="Ссылка на картинку" required>
         <span class="popup__field-error link-place-input-error"></span>

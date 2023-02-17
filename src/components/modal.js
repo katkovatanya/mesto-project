@@ -1,5 +1,5 @@
-//работу модальных окон — в файл
 import {toggleButtonState} from './validate.js';
+import {addCard} from './card.js';
 const profileName = document.querySelector('.profile__name');
 const profileText = document.querySelector('.profile__text');
 

@@ -1,5 +1,5 @@
 import {openPopup} from './modal.js';
-//функции для работы с карточками проекта Mesto вынесите в файл// массив карточек
+
 const initialCards = [
   {
     name: 'Архыз',
@@ -71,4 +71,4 @@ function addCard(item) {
 initialCards.forEach(addCard);
 
 
-export {};
+export {addCard};

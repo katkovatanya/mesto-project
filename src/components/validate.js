@@ -1,5 +1,3 @@
-//функциональность валидации форм вынесите в файл
-
 const vConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__field',
@@ -12,7 +10,7 @@ const vConfig = {
 //функция для валидации одного поля
 function validateInput(formElement, input, config) {
   //нашли span с текстом ошибки по классу
-  const errorElement = formElement.querySelector(`.${input.id}-error`); 
+  const errorElement = formElement.querySelector(`.${input.id}-error`);
   if (input.validity.valid) {
     //удаляем класс, стилизующий поле с ошибкой, удаляем текст span и класс видимоости этого текста
     input.classList.remove(config.inputErrorClass);
@@ -21,6 +19,13 @@ function validateInput(formElement, input, config) {
   }
   //иначе наоборот - добавляем стили и текст ошибки
   else {
+    //проверка регулярными выражениями
+    if (input.validity.patternMismatch) {
+      input.setCustomValidity(input.dataset.errorMessage);
+    }
+    else {
+      input.setCustomValidity("");
+    }
     input.classList.add(config.inputErrorClass);
     errorElement.textContent = input.validationMessage;
     errorElement.classList.add(config.errorClass);
@@ -69,5 +74,7 @@ function enableValidation(validationConfig) {
 // включение валидации вызовом enableValidation
 // все настройки передаются при вызове
 
-enableValidation(vConfig); 
-export {vConfig, toggleButtonState};
+enableValidation(vConfig);
+export { vConfig, toggleButtonState };
+
+///[а-яa-z0-9\-\sё]/gi; // кирилица, все латинские буквы, все цифры и дефис. пробел ё
