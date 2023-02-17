@@ -1,5 +1,5 @@
-import {toggleButtonState} from './validate.js';
-import {addCard} from './card.js';
+import { toggleButtonState } from './validate.js';
+import { addCard } from './card.js';
 const profileName = document.querySelector('.profile__name');
 const profileText = document.querySelector('.profile__text');
 
@@ -39,7 +39,7 @@ function openPopup(popup) {
       closePopup(popup);
     }
   });
-  document.addEventListener('keydown',handleClosePopup);
+  document.addEventListener('keydown', handleClosePopup);
 }
 
 //функция закрытия попапов
@@ -88,4 +88,4 @@ closeButtons.forEach((button) => {
   button.addEventListener('click', () => closePopup(popup));
 });
 
-export {clickProfileEditButton, clickPlusButton, handleProfileFormSubmit, formProfilePopup, handleCardFormSubmit, formPlace, openPopup};
+export { clickProfileEditButton, clickPlusButton, handleProfileFormSubmit, formProfilePopup, handleCardFormSubmit, formPlace, openPopup };

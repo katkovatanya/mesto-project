@@ -1,4 +1,4 @@
-import {openPopup} from './modal.js';
+import { openPopup } from './modal.js';
 
 const initialCards = [
   {
@@ -71,4 +71,4 @@ function addCard(item) {
 initialCards.forEach(addCard);
 
 
-export {addCard};
+export { addCard };
