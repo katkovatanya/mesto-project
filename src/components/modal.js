@@ -1,11 +1,12 @@
-import { toggleButtonState } from './validate.js';
+import { toggleButtonState, vConfig } from './validate.js';
 import { addCard } from './card.js';
 const profileName = document.querySelector('.profile__name');
 const profileText = document.querySelector('.profile__text');
 
 // попапы
 const profilePopup = document.querySelector('.profile-popup');
-const popupElement = document.querySelector('.element-popup');
+const cardPopup = document.querySelector('.element-popup');
+const popups = document.querySelectorAll('.popup');
 
 //форма профиля и её поля
 const formProfilePopup = document.querySelector('.popup__form');
@@ -22,7 +23,7 @@ const closeButtons = document.querySelectorAll('.popup__close-button');
 
 //функция закрытия кнопкой Esc
 
-function handleClosePopup(evt) {
+function handleEscape(evt) {
   if (evt.key === 'Escape') {
     const activePopup = document.querySelector('.popup_opened');
     closePopup(activePopup);
@@ -31,22 +32,14 @@ function handleClosePopup(evt) {
 
 //функция открытия попапов
 function openPopup(popup) {
-  const container = popup.querySelector('.popup__container');
   popup.classList.add('popup_opened');
-  popup.addEventListener('click', function (evt) {
-    const click = evt.composedPath().includes(container);
-    if (!click) {
-      closePopup(popup);
-    }
-  });
-  document.addEventListener('keydown', handleClosePopup);
+  document.addEventListener('keydown', handleEscape);
 }
 
 //функция закрытия попапов
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  popup.stopPropagation;
-  document.removeEventListener('keydown', handleClosePopup);
+  document.removeEventListener('keydown', handleEscape);
 }
 
 // функция для открытия формы редактирования профиля
@@ -58,9 +51,9 @@ function clickProfileEditButton() {
 
 //Функция открытия формы формы добавления новой карточки
 function clickPlusButton(vConfig) {
-  openPopup(popupElement);
-  const button = popupElement.querySelector(vConfig.submitButtonSelector);
-  const inputs = Array.from(popupElement.querySelector(vConfig.inputSelector));
+  openPopup(cardPopup);
+  const button = cardPopup.querySelector(vConfig.submitButtonSelector);
+  const inputs = Array.from(cardPopup.querySelectorAll(vConfig.inputSelector));
   toggleButtonState(button, vConfig, inputs);
 }
 
@@ -79,7 +72,7 @@ function handleCardFormSubmit(evt) {
   card.name = namePlaceInput.value;
   card.link = linkPlaceInput.value;
   addCard(card);
-  closePopup(popupElement);
+  closePopup(cardPopup);
   evt.target.reset();
 }
 
@@ -87,5 +80,13 @@ closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
   button.addEventListener('click', () => closePopup(popup));
 });
+
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if (evt.target.classList.contains('popup_opened')) {
+      closePopup(popup);
+    }
+  })
+})
 
 export { clickProfileEditButton, clickPlusButton, handleProfileFormSubmit, formProfilePopup, handleCardFormSubmit, formPlace, openPopup };
