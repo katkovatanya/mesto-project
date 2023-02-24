@@ -1,11 +1,12 @@
 import { toggleButtonState, vConfig } from './validate.js';
-import { addCard } from './card.js';
+import { postCard, editProfile, avatar, editAvatar } from './api.js';
 const profileName = document.querySelector('.profile__name');
 const profileText = document.querySelector('.profile__text');
 
 // попапы
 const profilePopup = document.querySelector('.profile-popup');
 const cardPopup = document.querySelector('.element-popup');
+const avatarPopup = document.querySelector('.avatar-popup');
 const popups = document.querySelectorAll('.popup');
 
 //форма профиля и её поля
@@ -19,7 +20,15 @@ const formPlace = document.querySelector('.element-popup__form');
 const namePlaceInput = document.querySelector('[name="name-place"]');
 const linkPlaceInput = document.querySelector('[name="link-place"]');
 
+//Форма смены аватара и её поле
+const avatarForm = document.querySelector('.avatar-popup__form');
+const avatarInput = avatarPopup.querySelector('[name="link-avatar"]');
+
+//кнопки попапов
 const closeButtons = document.querySelectorAll('.popup__close-button');
+const createCardButton = document.querySelector('.popup__add-button');
+const avatarSaveButton = document.querySelector('.popup__avatar-save-button');
+const profileSubmitButton = document.querySelector('.popup__save-button');
 
 //функция закрытия кнопкой Esc
 
@@ -57,23 +66,39 @@ function clickPlusButton(vConfig) {
   toggleButtonState(button, vConfig, inputs);
 }
 
-// Обработчик отправки формы
+// Обработчик отправки формы профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = nameInput.value;
   profileText.textContent = jobInput.value;
-  closePopup(profilePopup);
+  profileSubmitButton.textContent = "Сохранение...";
+  editProfile(nameInput, jobInput);
 }
+
 
 //отправка формы карточки
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
+  createCardButton.textContent = "Сохранение..."
   const card = {};
   card.name = namePlaceInput.value;
   card.link = linkPlaceInput.value;
-  addCard(card);
-  closePopup(cardPopup);
+  postCard(card);
   evt.target.reset();
+}
+
+function handleAvatarSubmit(evt) {
+  evt.preventDefault();
+  avatar.src = avatarInput.value;
+  avatarSaveButton.textContent = "Сохранение...";
+  editAvatar(avatarInput);
+}
+
+
+//попап аватара
+function clickAvatar() {
+  openPopup(avatarPopup);
+  avatarInput.value = avatar.src;
 }
 
 closeButtons.forEach((button) => {
@@ -89,4 +114,4 @@ popups.forEach((popup) => {
   })
 })
 
-export { clickProfileEditButton, clickPlusButton, handleProfileFormSubmit, formProfilePopup, handleCardFormSubmit, formPlace, openPopup };
+export { clickProfileEditButton, clickPlusButton, handleProfileFormSubmit, formProfilePopup, handleCardFormSubmit, formPlace, openPopup, profileName, profileText, clickAvatar, handleAvatarSubmit, avatarForm, createCardButton, closePopup, cardPopup, profilePopup, avatarPopup, avatarSaveButton, profileSubmitButton };

@@ -1,31 +1,5 @@
 import { openPopup } from './modal.js';
-
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+import { deleteCard, putLike, removeLike } from './api.js';
 
 const elements = document.querySelector('.elements');
 const popupImage = document.querySelector('.image-popup');
@@ -37,19 +11,40 @@ function createCard(elem) {
   const element = document.querySelector('#element').content;
   const cardElement = element.querySelector('.element').cloneNode(true);
   const cardImage = cardElement.querySelector('.element__image');
+  const likes = cardElement.querySelector('.element__number-of-likes');
+  const deleteButton = cardElement.querySelector('.element__delete-button');
   cardElement.querySelector('.element__name').textContent = elem.name;
   cardImage.src = elem.link;
   cardImage.alt = elem.name;
+  likes.textContent = elem.likes.length;
   //добавляем сразу слушатели событий для лайка и корзины
   const likeButton = cardElement.querySelector('.element__like-button');
+  //проверка, стоит ли лайк нашего пользователя на карточке
+  if (elem.likes.some(obj => obj._id == '3ab45f3d9237ef32a88af094')) {
+    likeButton.classList.add("element__like-button_active");
+  }
   likeButton.addEventListener('click', () => {
-    likeButton.classList.toggle("element__like-button_active");
+    let newLikes = {};
+    if (likeButton.classList.contains('element__like-button_active')) {
+      likeButton.classList.remove("element__like-button_active");
+      removeLike(elem, newLikes, likes);
+    }
+    else {
+      putLike(elem, newLikes, likes);
+      likeButton.classList.add("element__like-button_active");
+    }
+
   });
-  const deleteButton = cardElement.querySelector('.element__delete-button');
-  deleteButton.addEventListener('click', () => {
-    const card = deleteButton.closest('.element');
-    card.remove();
-  });
+  if (elem.owner._id == "3ab45f3d9237ef32a88af094") {
+    deleteButton.addEventListener('click', () => {
+      const card = deleteButton.closest('.element');
+      deleteCard(elem);
+      card.remove();
+    });
+  }
+  else {
+    deleteButton.remove();
+  }
   //добавляем функцию открытия попапа с картинкой
   const openImage = cardElement.querySelector('.element__open-button');
   openImage.addEventListener('click', () => {
@@ -66,9 +61,5 @@ function addCard(item) {
   const cardElement = createCard(item);
   elements.prepend(cardElement);
 }
-
-//загрузка на страницу карточек из массива
-initialCards.forEach(addCard);
-
 
 export { addCard };
