@@ -1,65 +1,55 @@
-import { addCard } from './card.js';
-import { profileName, profileText, createCardButton, closePopup, cardPopup, profilePopup, avatarPopup, avatarSaveButton, profileSubmitButton } from './modal.js';
+import { addCard, removeLikeDOM, putLikeDOM } from './card.js';
+import { createCardButton, closePopup, cardPopup, profilePopup, avatarPopup, avatarSaveButton, profileSubmitButton } from './modal.js';
+import { renderingProfile } from './utils.js';
 
-export const avatar = document.querySelector('.profile__avatar');
+export const apiConfig = {
+  address: 'https://nomoreparties.co/v1/plus-cohort-21/',
+  token: '83f87adb-6fb5-41e5-8ce5-f6fbadb1ae1c'
+};
 
-export const getProfile = () => {
-  fetch('https://nomoreparties.co/v1/plus-cohort-21/users/me', {
-    headers: {
-      authorization: '83f87adb-6fb5-41e5-8ce5-f6fbadb1ae1c'
-    }
-  })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      else {
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
-    })
-    .then((result) => {
-      profileName.textContent = result.name;
-      profileText.textContent = result.about;
-      avatar.src = result.avatar;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  else {
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
 }
 
-
-export const getInitialCards = () => {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-21/cards', {
+export const getProfile = (apiConfig) => {
+  return fetch(apiConfig.address + 'users/me', {
     method: 'GET',
     headers: {
-      authorization: '83f87adb-6fb5-41e5-8ce5-f6fbadb1ae1c'
+      authorization: apiConfig.token
     }
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-      else {
-        return Promise.reject(`Ошибка ${res.status}`)
-      }
-    })
-    .then((result) => {
-      let initialCards = Array.from(result.reverse());
-      initialCards.forEach(elem => {
-        addCard(elem);
-      });
-    })
+    .then(res => checkResponse(res))
     .catch((err) => {
       console.log(err);
     });
 }
 
+
+export const getInitialCards = (apiConfig) => {
+  return fetch(apiConfig.address + 'cards', {
+    method: 'GET',
+    headers: {
+      authorization: apiConfig.token
+    }
+  })
+    .then(res => checkResponse(res))
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+
 //функция отправки карточки на сервер
-export const postCard = (elem) => {
-  fetch('https://nomoreparties.co/v1/plus-cohort-21/cards', {
+export const postCard = (elem, apiConfig) => {
+  fetch(apiConfig.address + 'cards', {
     method: 'POST',
     headers: {
-      authorization: '83f87adb-6fb5-41e5-8ce5-f6fbadb1ae1c',
+      authorization: apiConfig.token,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -67,44 +57,31 @@ export const postCard = (elem) => {
       link: elem.link,
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      else {
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
-    })
+    .then(res => checkResponse(res))
     .then(res => {
       addCard(res);
+      closePopup(cardPopup);
     })
     .catch((err) => {
       console.log(err); // выводим ошибку в консоль
     })
     .finally(() => {
       createCardButton.textContent = 'Создать';
-      closePopup(cardPopup);
     })
 }
 
 
-export const deleteCard = (card) => {
-  return fetch(`https://nomoreparties.co/v1/plus-cohort-21/cards/${card._id}`, {
+export const deleteCard = (card, apiConfig, elem) => {
+  return fetch(apiConfig.address + `cards/${card._id}`, {
     method: 'DELETE',
     headers: {
-      authorization: '83f87adb-6fb5-41e5-8ce5-f6fbadb1ae1c'
+      authorization: apiConfig.token
     }
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      else {
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
-    })
+    .then(res => checkResponse(res))
     .then(res => {
       console.log(res);
+      elem.remove()
     })
     .catch((err) => {
       console.log(err);
@@ -112,11 +89,11 @@ export const deleteCard = (card) => {
 }
 
 //редактирование профиля
-export const editProfile = (nameInput, jobInput) => {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-21/users/me', {
+export const editProfile = (nameInput, jobInput, apiConfig) => {
+  return fetch(apiConfig.address + 'users/me', {
     method: 'PATCH',
     headers: {
-      authorization: '83f87adb-6fb5-41e5-8ce5-f6fbadb1ae1c',
+      authorization: apiConfig.token,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
@@ -124,93 +101,69 @@ export const editProfile = (nameInput, jobInput) => {
       about: jobInput.value
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      else {
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
+    .then(res => checkResponse(res))
+    .then((res) => {
+      renderingProfile(res);
+      closePopup(profilePopup);
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
-      closePopup(profilePopup);
       profileSubmitButton.textContent = "Сохранить";
     })
 }
 
-export const editAvatar = (avatarInput) => {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-21/users/me/avatar', {
+export const editAvatar = (avatarInput, apiConfig) => {
+  return fetch(apiConfig.address + 'users/me/avatar', {
     method: 'PATCH',
     headers: {
-      authorization: '83f87adb-6fb5-41e5-8ce5-f6fbadb1ae1c',
+      authorization: apiConfig.token,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       avatar: avatarInput.value
     })
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      else {
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
+    .then(res => checkResponse(res))
+    .then((res) => {
+      renderingProfile(res);
+      closePopup(avatarPopup);
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
-      closePopup(avatarPopup);
       avatarSaveButton.textContent = "Сохранить";
     })
 }
 
-export const putLike = (card, newLikes, likes) => {
-  return fetch(`https://nomoreparties.co/v1/plus-cohort-21/cards/likes/${card._id}`, {
+export const putLike = (card, newLikes, likes, apiConfig, likeButton) => {
+  return fetch(apiConfig.address + `cards/likes/${card._id}`, {
     method: 'PUT',
     headers: {
-      authorization: '83f87adb-6fb5-41e5-8ce5-f6fbadb1ae1c'
+      authorization: apiConfig.token
     }
   })
+    .then(res => checkResponse(res))
     .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      else {
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
-    })
-    .then(res => {
-      newLikes = res;
-      likes.textContent = newLikes.likes.length;
+      putLikeDOM(likes, res, likeButton)
     })
     .catch((err) => {
       console.log(err);
     });
 }
 
-export const removeLike = (card, newLikes, likes) => {
-  return fetch(`https://nomoreparties.co/v1/plus-cohort-21/cards/likes/${card._id}`, {
+export const removeLike = (card, newLikes, likes, apiConfig, likeButton) => {
+  return fetch(apiConfig.address + `cards/likes/${card._id}`, {
     method: 'DELETE',
     headers: {
-      authorization: '83f87adb-6fb5-41e5-8ce5-f6fbadb1ae1c'
+      authorization: apiConfig.token
     }
   })
+    .then(res => checkResponse(res))
     .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      else {
-        return Promise.reject(`Ошибка: ${res.status}`);
-      }
-    })
-    .then(res => {
-      newLikes = res;
-      likes.textContent = newLikes.likes.length;
+      removeLikeDOM(likes, res, likeButton)
     })
     .catch((err) => {
       console.log(err);

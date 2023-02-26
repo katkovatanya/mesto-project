@@ -1,5 +1,5 @@
 import { toggleButtonState, vConfig } from './validate.js';
-import { postCard, editProfile, avatar, editAvatar } from './api.js';
+import { postCard, editProfile, editAvatar, apiConfig } from './api.js';
 const profileName = document.querySelector('.profile__name');
 const profileText = document.querySelector('.profile__text');
 
@@ -29,7 +29,7 @@ const closeButtons = document.querySelectorAll('.popup__close-button');
 const createCardButton = document.querySelector('.popup__add-button');
 const avatarSaveButton = document.querySelector('.popup__avatar-save-button');
 const profileSubmitButton = document.querySelector('.popup__save-button');
-
+const avatar = document.querySelector('.profile__avatar');
 //функция закрытия кнопкой Esc
 
 function handleEscape(evt) {
@@ -69,10 +69,8 @@ function clickPlusButton(vConfig) {
 // Обработчик отправки формы профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileText.textContent = jobInput.value;
   profileSubmitButton.textContent = "Сохранение...";
-  editProfile(nameInput, jobInput);
+  editProfile(nameInput, jobInput, apiConfig);
 }
 
 
@@ -83,22 +81,21 @@ function handleCardFormSubmit(evt) {
   const card = {};
   card.name = namePlaceInput.value;
   card.link = linkPlaceInput.value;
-  postCard(card);
+  postCard(card, apiConfig);
   evt.target.reset();
 }
 
 function handleAvatarSubmit(evt) {
   evt.preventDefault();
-  avatar.src = avatarInput.value;
   avatarSaveButton.textContent = "Сохранение...";
-  editAvatar(avatarInput);
+  editAvatar(avatarInput, apiConfig);
 }
 
 
 //попап аватара
 function clickAvatar() {
   openPopup(avatarPopup);
-  avatarInput.value = avatar.src;
+  avatarInput.value = "";
 }
 
 closeButtons.forEach((button) => {
@@ -114,4 +111,4 @@ popups.forEach((popup) => {
   })
 })
 
-export { clickProfileEditButton, clickPlusButton, handleProfileFormSubmit, formProfilePopup, handleCardFormSubmit, formPlace, openPopup, profileName, profileText, clickAvatar, handleAvatarSubmit, avatarForm, createCardButton, closePopup, cardPopup, profilePopup, avatarPopup, avatarSaveButton, profileSubmitButton };
+export { clickProfileEditButton, clickPlusButton, handleProfileFormSubmit, formProfilePopup, handleCardFormSubmit, formPlace, openPopup, profileName, profileText, clickAvatar, handleAvatarSubmit, avatarForm, createCardButton, closePopup, cardPopup, profilePopup, avatarPopup, avatarSaveButton, profileSubmitButton, avatar };

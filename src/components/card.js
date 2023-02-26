@@ -1,10 +1,20 @@
 import { openPopup } from './modal.js';
-import { deleteCard, putLike, removeLike } from './api.js';
+import { apiConfig, deleteCard, putLike, removeLike } from './api.js';
 
 const elements = document.querySelector('.elements');
 const popupImage = document.querySelector('.image-popup');
 const imagePopupCaption = popupImage.querySelector('.popup__caption');
 const imagePopupPicture = popupImage.querySelector('.popup__image');
+
+function putLikeDOM(likes, newLikes, likeButton) {
+  likeButton.classList.add("element__like-button_active");
+  likes.textContent = newLikes.likes.length;
+}
+
+function removeLikeDOM(likes, newLikes, likeButton) {
+  likeButton.classList.remove("element__like-button_active");
+  likes.textContent = newLikes.likes.length;
+}
 
 //функция создания карточки
 function createCard(elem) {
@@ -26,20 +36,17 @@ function createCard(elem) {
   likeButton.addEventListener('click', () => {
     let newLikes = {};
     if (likeButton.classList.contains('element__like-button_active')) {
-      likeButton.classList.remove("element__like-button_active");
-      removeLike(elem, newLikes, likes);
+      removeLike(elem, newLikes, likes, apiConfig, likeButton);
     }
     else {
-      putLike(elem, newLikes, likes);
-      likeButton.classList.add("element__like-button_active");
+      putLike(elem, newLikes, likes, apiConfig, likeButton);
     }
 
   });
   if (elem.owner._id == "3ab45f3d9237ef32a88af094") {
     deleteButton.addEventListener('click', () => {
       const card = deleteButton.closest('.element');
-      deleteCard(elem);
-      card.remove();
+      deleteCard(elem, apiConfig, card);
     });
   }
   else {
@@ -62,4 +69,4 @@ function addCard(item) {
   elements.prepend(cardElement);
 }
 
-export { addCard };
+export { addCard, removeLikeDOM, putLikeDOM };
