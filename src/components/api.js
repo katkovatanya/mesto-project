@@ -20,9 +20,6 @@ export const getProfile = (apiConfig) => {
     }
   })
     .then(res => checkResponse(res))
-    .catch((err) => {
-      console.log(err);
-    });
 }
 
 
@@ -34,9 +31,6 @@ export const getInitialCards = (apiConfig) => {
     }
   })
     .then(res => checkResponse(res))
-    .catch((err) => {
-      console.log(err);
-    });
 }
 
 

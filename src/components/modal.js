@@ -1,4 +1,4 @@
-import { toggleButtonState } from './validate.js';
+import { toggleButtonState, vConfig } from './validate.js';
 import { addCard } from './card.js';
 import { postCard, editProfile, editAvatar, apiConfig } from './api.js';
 import { renderingProfile } from './utils.js';
@@ -32,6 +32,7 @@ const createCardButton = document.querySelector('.popup__add-button');
 const avatarSaveButton = document.querySelector('.popup__avatar-save-button');
 const profileSubmitButton = document.querySelector('.popup__save-button');
 const avatar = document.querySelector('.profile__avatar');
+
 //функция закрытия кнопкой Esc
 
 function handleEscape(evt) {
@@ -97,6 +98,7 @@ function handleCardFormSubmit(evt) {
     .then(res => {
       addCard(res);
       closePopup(cardPopup);
+      evt.target.reset();
     })
     .catch((err) => {
       console.log(err); // выводим ошибку в консоль
@@ -104,7 +106,6 @@ function handleCardFormSubmit(evt) {
     .finally(() => {
       createCardButton.textContent = 'Создать';
     });
-  evt.target.reset();
 }
 
 function handleAvatarSubmit(evt) {
@@ -125,9 +126,12 @@ function handleAvatarSubmit(evt) {
 
 
 //попап аватара
-function clickAvatar() {
+function clickAvatar(vConfig) {
   openPopup(avatarPopup);
   avatarInput.value = "";
+  const button = avatarPopup.querySelector(vConfig.submitButtonSelector);
+  const input = Array.from(avatarPopup.querySelectorAll(vConfig.inputSelector));
+  toggleButtonState(button, vConfig, input);
 }
 
 closeButtons.forEach((button) => {

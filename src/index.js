@@ -15,6 +15,9 @@ Promise.all([getProfile(apiConfig), getInitialCards(apiConfig)])
       addCard(elem);
     })
   })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 //кнопка открытия формы добавления новой карточки
@@ -22,7 +25,7 @@ const plusButton = document.querySelector('.profile__add-button');
 const avatarButton = document.querySelector('.profile__avatar-button');
 
 
-avatarButton.addEventListener('click', clickAvatar);
+avatarButton.addEventListener('click', () => clickAvatar(vConfig));
 
 profileEditButton.addEventListener('click', clickProfileEditButton);
 
