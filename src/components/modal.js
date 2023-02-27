@@ -1,5 +1,7 @@
-import { toggleButtonState, vConfig } from './validate.js';
+import { toggleButtonState } from './validate.js';
+import { addCard } from './card.js';
 import { postCard, editProfile, editAvatar, apiConfig } from './api.js';
+import { renderingProfile } from './utils.js';
 const profileName = document.querySelector('.profile__name');
 const profileText = document.querySelector('.profile__text');
 
@@ -70,7 +72,17 @@ function clickPlusButton(vConfig) {
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileSubmitButton.textContent = "Сохранение...";
-  editProfile(nameInput, jobInput, apiConfig);
+  editProfile(nameInput, jobInput, apiConfig)
+    .then((res) => {
+      renderingProfile(res);
+      closePopup(profilePopup);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      profileSubmitButton.textContent = "Сохранить";
+    });
 }
 
 
@@ -81,14 +93,34 @@ function handleCardFormSubmit(evt) {
   const card = {};
   card.name = namePlaceInput.value;
   card.link = linkPlaceInput.value;
-  postCard(card, apiConfig);
+  postCard(card, apiConfig)
+    .then(res => {
+      addCard(res);
+      closePopup(cardPopup);
+    })
+    .catch((err) => {
+      console.log(err); // выводим ошибку в консоль
+    })
+    .finally(() => {
+      createCardButton.textContent = 'Создать';
+    });
   evt.target.reset();
 }
 
 function handleAvatarSubmit(evt) {
   evt.preventDefault();
   avatarSaveButton.textContent = "Сохранение...";
-  editAvatar(avatarInput, apiConfig);
+  editAvatar(avatarInput, apiConfig)
+    .then((res) => {
+      renderingProfile(res);
+      closePopup(avatarPopup);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      avatarSaveButton.textContent = "Сохранить";
+    })
 }
 
 

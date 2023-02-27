@@ -1,5 +1,6 @@
 import { openPopup } from './modal.js';
 import { apiConfig, deleteCard, putLike, removeLike } from './api.js';
+import { userId } from './utils.js';
 
 const elements = document.querySelector('.elements');
 const popupImage = document.querySelector('.image-popup');
@@ -30,23 +31,41 @@ function createCard(elem) {
   //добавляем сразу слушатели событий для лайка и корзины
   const likeButton = cardElement.querySelector('.element__like-button');
   //проверка, стоит ли лайк нашего пользователя на карточке
-  if (elem.likes.some(obj => obj._id == '3ab45f3d9237ef32a88af094')) {
+  if (elem.likes.some(obj => obj._id == userId)) {
     likeButton.classList.add("element__like-button_active");
   }
   likeButton.addEventListener('click', () => {
-    let newLikes = {};
     if (likeButton.classList.contains('element__like-button_active')) {
-      removeLike(elem, newLikes, likes, apiConfig, likeButton);
+      removeLike(elem, apiConfig)
+        .then(res => {
+          removeLikeDOM(likes, res, likeButton)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
     else {
-      putLike(elem, newLikes, likes, apiConfig, likeButton);
+      putLike(elem, apiConfig)
+        .then(res => {
+          putLikeDOM(likes, res, likeButton)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
 
   });
-  if (elem.owner._id == "3ab45f3d9237ef32a88af094") {
+  if (elem.owner._id == userId) {
     deleteButton.addEventListener('click', () => {
       const card = deleteButton.closest('.element');
-      deleteCard(elem, apiConfig, card);
+      deleteCard(elem, apiConfig)
+        .then(res => {
+          console.log(res);
+          card.remove()
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
   }
   else {
